@@ -19,4 +19,18 @@ jobs:
           username: ${{ secrets.USER_NAME }}
           password: ${{ secrets.ACCESS_TOKEN }}
 
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+      
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          content: ./
+          file: ./Dockerfile
+          push: true
+          tags: ushamandya/simplewhale:latest
 
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
